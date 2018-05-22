@@ -44,6 +44,28 @@ class PodReflector(NamespacedResourceReflector):
     def pods(self):
         return self.resources
 
+class EventReflector(NamespacedResourceReflector):
+    kind = 'events'
+
+    labels = {
+        'heritage': 'jupyterhub',
+        'component': 'singleuser-server',
+    }
+
+    fields = {
+        'involvedObject.name': self.pod,
+    }
+
+    list_method_name = 'list_namespaced_event'
+
+    @property
+    def events(self):
+        return self.resources
+
+    @property
+    def pod(self,pod):
+        self.pod = pod
+
 class KubeSpawner(Spawner):
     """
     Implement a JupyterHub spawner to spawn pods in a Kubernetes Cluster.

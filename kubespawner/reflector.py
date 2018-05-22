@@ -25,6 +25,14 @@ class NamespacedResourceReflector(LoggingConfigurable):
         """
     )
 
+    fields = Dict(
+        {},
+        config=True,
+        help="""
+        Fields for selector
+        """
+    )
+
     namespace = Unicode(
         None,
         allow_none=True,
