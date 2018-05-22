@@ -44,7 +44,7 @@ class PodReflector(NamespacedResourceReflector):
     def pods(self):
         return self.resources
 
-class EventReflector(NamespacedResourceReflector):
+class PodEventReflector(NamespacedResourceReflector):
     kind = 'events'
 
     labels = {
@@ -52,9 +52,7 @@ class EventReflector(NamespacedResourceReflector):
         'component': 'singleuser-server',
     }
 
-    fields = {
-        'involvedObject.name': self.pod,
-    }
+    fields ={}
 
     list_method_name = 'list_namespaced_event'
 
@@ -62,9 +60,11 @@ class EventReflector(NamespacedResourceReflector):
     def events(self):
         return self.resources
 
-    @property
-    def pod(self,pod):
-        self.pod = pod
+    def set_selector(self,pod): 
+        pod_field = {
+           'involvedObject.name': pod,
+        }
+        self.fields.update(pod_field)
 
 class KubeSpawner(Spawner):
     """
